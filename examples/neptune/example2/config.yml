@@ -1,0 +1,15 @@
+config:
+  target: "https://<NEPTUNE URL>:8182"
+  phases:
+    - duration: 300
+      arrivalRate: 10
+      name: Test
+  processor: "./functions.js"
+scenarios:
+  - flow:
+    - loop:
+      - function: "getRandomFloat"
+      - post:
+          url: "/gremlin"
+          json: {"gremlin":"g.V('test-{{ randomFloat }}').repeat(out('sampleedge').simplePath()).times(2)"}
+      count: 1

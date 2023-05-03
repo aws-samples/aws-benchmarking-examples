@@ -1,0 +1,15 @@
+config:
+  target: "https://<NEPTUNE URL>:8182"
+  tls:
+    rejectUnauthorized: false
+  phases:
+    - duration: 300
+      arrivalRate: 10
+      name: Test
+scenarios:
+  - flow:
+    - loop:
+      - post:
+          url: "/gremlin"
+          json: {"gremlin":"g.V('test-{{$randomNumber(1,20)}}').repeat(out('sampleedge').simplePath()).times(2)"}
+      count: 100
